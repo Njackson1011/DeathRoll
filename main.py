@@ -111,8 +111,8 @@ async def roll(ctx, *, argument: str = None):
 
         if len(parts) == 2 and parts[1].isdigit():
             author_result = random.randint(1,int(parts[1]))
-
-        author_result = random.randint(1, 100)
+        else:
+            author_result = random.randint(1, 100)
         author_results.append(author_result)
 
         target_result = random.randint(1, author_result)
@@ -138,11 +138,16 @@ async def roll(ctx, *, argument: str = None):
         for i in range(min_length):
             result_text += f"{ctx.author}: {author_results[i]}\n"
             result_text += f"{target}: {target_results[i]}\n"
+            
+        if min_length < len(author_results):
+            result_text += f"{ctx.author}: {author_results[-1]}\n"
+        elif min_length < len(target_results):
+            result_text += f"{target}: {target_results[-1]}\n"
 
         if author_result == 1:
-            result_text += f"{ctx.author} lost the Death Roll against {target}!"
+            result_text += f"\n{ctx.author} lost the Death Roll against {target}!"
         else:
-            result_text += f"{target} lost the Death Roll against {ctx.author}!"
+            result_text += f"\n{target} lost the Death Roll against {ctx.author}!"
 
         await ctx.send(result_text)
 
